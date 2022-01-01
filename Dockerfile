@@ -11,8 +11,6 @@ RUN mkdir /app
 WORKDIR /app
 COPY ./app /app
 
-ENTRYPOINT ["python"]
-
 RUN adduser -D user
 USER user
 
