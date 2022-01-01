@@ -2,17 +2,17 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-class AdminSiteTests(TestCase, Client):
+class AdminSiteTests(TestCase):
 
-    def setup(self):
+    def setUp(self):
         """Create test client, user, make sure logged in, create regular user"""
         self.client = Client()
-        self.admin = get_user_model.objects.create_superuser(
+        self.admin = get_user_model().objects.create_superuser(
             email='admin@test.com',
             password='password'
         )
-        self.client.force_login(self.admin_user)
-        self.user = get_user_model.objects.create_user(
+        self.client.force_login(self.admin)
+        self.user = get_user_model().objects.create_user(
             email = 'user@test.com',
             password = 'password',
             name = 'Test User Full Name'
@@ -21,10 +21,10 @@ class AdminSiteTests(TestCase, Client):
     def test_users_listed(self):
         """Test that users are correctly listed"""
         url = reverse('admin:core_user_changelist')
-        res = self.Client.get(url)
+        res = self.client.get(url)
 
-        self.AssertContains(res, self.user.name)
-        self.AssertContains(res, self.user.email)
+        self.assertContains(res, self.user.name)
+        self.assertContains(res, self.user.email)
 
     def test_user_change_page(self):
         """Test that the user edit page works"""
