@@ -27,3 +27,12 @@ D.) Run tests in tests.py file.
 
 5.) Create 'core' app for running high-level commands like user mamangement
 - Create app with docker-compose commands - read up on why doing this
+- Create test folder to allow for multiple test files.
+
+6.) Setup postgres server
+- Add to docker-compose
+- Add support to Dockerfile
+- Add to django settings
+
+7.) Mocking for Testing
+- Add management command to wait for db availability
