@@ -24,3 +24,6 @@ B.) docker-compose setups up the project for running in container.
     - Can use docker-compose for running testing locally as well.
 C.) travis.yml responsible for running commands related to Travis-CI online testing
 D.) Run tests in tests.py file.
+
+5.) Create 'core' app for running high-level commands like user mamangement
+- Create app with docker-compose commands - read up on why doing this
