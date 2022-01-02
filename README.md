@@ -41,3 +41,5 @@ D.) Run tests in tests.py file.
 
 9.) Token Creation API
 
+10.) Manage user endpoint
+- Now that tokens authenticate users, can allow users to manage.
