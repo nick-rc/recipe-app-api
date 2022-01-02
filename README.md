@@ -36,3 +36,8 @@ D.) Run tests in tests.py file.
 
 7.) Mocking for Testing
 - Add management command to wait for db availability
+
+8.) User Creation API
+
+9.) Token Creation API
+
