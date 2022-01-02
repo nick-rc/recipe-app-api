@@ -43,3 +43,9 @@ D.) Run tests in tests.py file.
 
 10.) Manage user endpoint
 - Now that tokens authenticate users, can allow users to manage.
+
+11.) Create Recipe App - Tags API
+- Recipe App will contain recipe related recipes.
+- Create Tag model
+- Create list tags API
+
