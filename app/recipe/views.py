@@ -1,3 +1,4 @@
+from django.contrib.auth.base_user import BaseUserManager
 from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -7,14 +8,12 @@ from core.models import Tag, Ingredient
 from recipe import serializers
 
 
-class TagViewSet(viewsets.GenericViewSet,
-                 mixins.ListModelMixin,
-                 mixins.CreateModelMixin):
-    """Manage tags in the db"""
+class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
+                            mixins.ListModelMixin,
+                            mixins.CreateModelMixin):
+    """Base viewset for user owned recipe attributes"""
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    queryset = Tag.objects.all()
-    serializer_class = serializers.TagSerializer
 
     def get_queryset(self):
         """Return objs for current user only"""
@@ -25,20 +24,16 @@ class TagViewSet(viewsets.GenericViewSet,
         serializer.save(user=self.request.user)
 
 
-class IngredientViewSet(viewsets.GenericViewSet,
-                        mixins.ListModelMixin,
-                        mixins.CreateModelMixin):
+class TagViewSet(BaseRecipeAttrViewSet):
+    """Manage tags in the db"""
+    queryset = Tag.objects.all()
+    serializer_class = serializers.TagSerializer
+
+
+
+class IngredientViewSet(BaseRecipeAttrViewSet):
     """Manage Ingredients Objects"""
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
     queryset = Ingredient.objects.all()
     serializer_class = serializers.IngredientSerializer
 
-    def get_queryset(self):
-        """Filter by user name"""
-        return self.queryset.filter(user=self.request.user).order_by('-name')
-    
-    def perform_create(self, serializer):
-        """Create new Ingredient"""
-        serializer.save(user=self.request.user)
 # ENDFILE
