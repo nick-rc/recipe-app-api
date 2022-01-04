@@ -68,7 +68,7 @@ class PrivateIngredientsAPITests(TestCase):
     def test_create_ingredient_successful(self):
         """Test creation with valid payload"""
 
-        payload={'name': 'Cabbage'}
+        payload = {'name': 'Cabbage'}
         self.client.post(INGREDIENTS_URL, payload)
         exists = Ingredient.objects.filter(
             user=self.user,
@@ -80,7 +80,7 @@ class PrivateIngredientsAPITests(TestCase):
     def test_create_ingredient_invalid(self):
         """Test creation with invalid payload"""
 
-        payload={'name': ''}
+        payload = {'name': ''}
         res = self.client.post(INGREDIENTS_URL, payload)
         exists = Ingredient.objects.filter(
             user=self.user,
@@ -88,4 +88,3 @@ class PrivateIngredientsAPITests(TestCase):
         ).exists()
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
-
