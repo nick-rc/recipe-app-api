@@ -53,3 +53,7 @@ D.) Run tests in tests.py file.
 - Recipe App will contain recipe related recipes.
 - Create Ingredients model
 - Create list tags API
+
+12.) Create Recipe App - Recipe API
+
+13.) Image Support
