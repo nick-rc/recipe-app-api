@@ -1,3 +1,8 @@
+import tempfile
+import os
+
+from PIL import Image
+
 from unittest.mock import patch
 
 from django.test import TestCase
