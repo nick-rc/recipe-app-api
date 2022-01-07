@@ -1,4 +1,4 @@
-from django.contrib.auth.base_user import BaseUserManager
+# from django.contrib.auth.base_user import BaseUserManager
 from rest_framework import viewsets, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -53,10 +53,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         """Return appropriate serializer class"""
         if self.action == 'retrieve':
+            print("Detail")
             return serializers.RecipeDetailSerializer
-        elif self.action == 'upload-image':
+        elif self.action == 'upload_image':
+            print("Upload")
             return serializers.RecipeImageSerializer
-
+        print("Returned this instead")
         return self.serializer_class
 
     def perform_create(self, serializer):
@@ -66,18 +68,24 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(methods=['POST'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
         """Upload image func to recipe"""
+        print("ACTION?")
+        print(self.action)
+        print(request.data)
         recipe = self.get_object()
         serializer = self.get_serializer(
             recipe, 
             data=request.data
         )
+        print(serializer.is_valid())
 
         if serializer.is_valid():
+            print("Valid serialize?")
             serializer.save()
             return Response(
                 serializer.data,
                 status=status.HTTP_200_OK
             )
+        print(serializer.errors)
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST

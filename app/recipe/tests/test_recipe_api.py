@@ -225,7 +225,7 @@ class RecipeImageUploadTests(TestCase):
 
     def test_upload_image_to_recipe(self):
         """Test uploading and image to a recipe"""
-        url = image_upload_url(self.recipe.url)
+        url = image_upload_url(self.recipe.id)
         with tempfile.NamedTemporaryFile(suffix='.jpg') as ntf:
             img = Image.new('RGB', (10, 10))
             img.save(ntf, format='JPEG')
@@ -240,10 +240,13 @@ class RecipeImageUploadTests(TestCase):
 
     def test_upload_image_bad_request(self):
         """TEst uploading an invalid image"""
-        url = image_upload_url(self.recipe.url)
+        url = image_upload_url(self.recipe.id)
         res = self.client.post(url, {'image': 'notimage'}, format='multipart')
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 # ENDFILE
