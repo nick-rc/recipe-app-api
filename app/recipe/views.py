@@ -45,20 +45,31 @@ class RecipeViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
+    def _params_to_ints(self, qs):
+        """Convert lsit of string ids to ints"""
+        return [int(str_id) for str_id in qs.split(',')]
+
     def get_queryset(self):
         """Retrieve recipes for auth user"""
+        tags = self.request.query_params.get('tags')
+        ingredients = self.request.query_params.get('ingredients')
+        queryset = self.queryset
 
-        return self.queryset.filter(user=self.request.user)
+        if tags:
+            tag_ids = self._params_to_ints(tags)
+            queryset = queryset.filter(tags__id__in=tag_ids)
+        if ingredients:
+            ingredient_ids = self._params_to_ints(ingredients)
+            queryset = queryset.filter(ingredients__id__in=ingredient_ids)
+        return queryset.filter(user=self.request.user)
 
     def get_serializer_class(self):
         """Return appropriate serializer class"""
         if self.action == 'retrieve':
-            print("Detail")
             return serializers.RecipeDetailSerializer
         elif self.action == 'upload_image':
-            print("Upload")
             return serializers.RecipeImageSerializer
-        print("Returned this instead")
+
         return self.serializer_class
 
     def perform_create(self, serializer):
@@ -68,15 +79,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(methods=['POST'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
         """Upload image func to recipe"""
-        print("ACTION?")
-        print(self.action)
-        print(request.data)
         recipe = self.get_object()
         serializer = self.get_serializer(
             recipe, 
             data=request.data
         )
-        print(serializer.is_valid())
 
         if serializer.is_valid():
             print("Valid serialize?")
@@ -85,7 +92,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 serializer.data,
                 status=status.HTTP_200_OK
             )
-        print(serializer.errors)
+
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
